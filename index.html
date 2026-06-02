@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ating123 Portal</title>
+    <!-- Google Fonts Outfit & Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080516;
+            --font-outfit: 'Outfit', 'Noto Sans TC', sans-serif;
+            --accent-purple: #818cf8;
+            --accent-pink: #f472b6;
+            --accent-cyan: #22d3ee;
+            --accent-orange: #fb923c;
+            --accent-red: #ef4444;
+            --accent-yellow: #fef08a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            font-family: 'Noto Sans TC', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Particles Background Canvas */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .portal-container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Language Switcher */
+        .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .lang-btn {
+            background: #4f46e5;
+            border: 1.5px solid #4f46e5;
+            color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+        .lang-btn:hover {
+            background: linear-gradient(90deg, #4f46e5, #f472b6);
+            border-color: #f472b6;
+            box-shadow: 0 4px 15px rgba(244, 114, 182, 0.4);
+            transform: translateY(-1px);
+        }
+        .lang-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Header Portal Logo */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            user-select: none;
+        }
+        header h1 {
+            font-family: var(--font-outfit);
+            font-size: 56px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4f46e5 0%, var(--accent-pink) 50%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            display: inline-block;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 20px rgba(79, 70, 229, 0.25));
+        }
+        header p {
+            font-size: 16px;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* 3 Columns Card Grid */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        /* Portal Glass Card */
+        .portal-card {
+            background: rgba(30, 27, 75, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        /* Cyberpunk Hover Colors for Card Borders and Glows */
+        .portal-card.card-quiz::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 24px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .portal-card.card-quiz:hover {
+            transform: translateY(-8px);
+            border-color: transparent;
+            box-shadow: 0 20px 40px rgba(129, 140, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        .portal-card.card-quiz:hover::before {
+            opacity: 1;
+        }
+
+        .portal-card.card-game::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 24px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-yellow));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .portal-card.card-game:hover {
+            transform: translateY(-8px);
+            border-color: transparent;
+            box-shadow: 0 20px 40px rgba(34, 211, 238, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        .portal-card.card-game:hover::before {
+            opacity: 1;
+        }
+
+        .portal-card.card-sec::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 24px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .portal-card.card-sec:hover {
+            transform: translateY(-8px);
+            border-color: transparent;
+            box-shadow: 0 20px 40px rgba(251, 146, 60, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        .portal-card.card-sec:hover::before {
+            opacity: 1;
+        }
+
+        /* Card Icon Box */
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s;
+        }
+        .portal-card:hover .icon-box {
+            transform: scale(1.1) rotate(2deg);
+        }
+        .card-quiz .icon-box svg { color: var(--accent-pink); filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.4)); }
+        .card-game .icon-box svg { color: var(--accent-cyan); filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.4)); }
+        .card-sec .icon-box svg { color: var(--accent-orange); filter: drop-shadow(0 0 10px rgba(251, 146, 60, 0.4)); }
+
+        /* Card Typography */
+        .portal-card h3 {
+            font-family: var(--font-outfit);
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .portal-card p {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            min-height: 68px; /* 保證卡片內文對齊 */
+        }
+
+        /* Action Link Button Inside Card */
+        .card-btn {
+            margin-top: auto;
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s;
+        }
+        .card-quiz:hover .card-btn {
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.3);
+            border-color: transparent;
+        }
+        .card-game:hover .card-btn {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+            border-color: transparent;
+        }
+        .card-sec:hover .card-btn {
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-red));
+            box-shadow: 0 0 15px rgba(251, 146, 60, 0.3);
+            border-color: transparent;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #475569;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 24px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* ================= 響應式排版 (RWD) ================= */
+        @media (max-width: 900px) {
+            header h1 {
+                font-size: 46px;
+            }
+            .portal-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+            /* 讓第三個卡片滿版 */
+            .card-sec {
+                grid-column: span 2;
+                max-width: 50%;
+                margin: 0 auto;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 38px;
+            }
+            header p {
+                font-size: 14px;
+            }
+            .portal-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .card-sec {
+                grid-column: span 1;
+                max-width: 100%;
+            }
+            .lang-switcher {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 0 0 24px auto; /* 靠右對齊 */
+            }
+            /* 調整手機順序防重疊 */
+            header {
+                order: 1;
+                margin-bottom: 24px;
+            }
+            .lang-switcher {
+                order: 2;
+            }
+            .portal-grid {
+                order: 3;
+            }
+            footer {
+                order: 4;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Particles Background -->
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="portal-container">
+        <!-- 語言切換按鈕 -->
+        <div class="lang-switcher">
+            <button class="lang-btn" id="lang-toggle-btn" onclick="toggleLanguage()">EN</button>
+        </div>
+
+        <!-- Portal Header -->
+        <header>
+            <h1 id="portalTitle">Ating123 Hub</h1>
+            <p id="portalDesc">解鎖驚喜與實用工具的宇宙。探索我們的趣味心理測驗、休閒解壓遊戲與即時資安通知服務。</p>
+        </header>
+
+        <!-- Portal Grid (3 Columns) -->
+        <div class="portal-grid">
+            <!-- 1. Fun Quizzes -->
+            <a href="https://quiz.ating123.com" class="portal-card card-quiz">
+                <div class="icon-box">
+                    <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                </div>
+                <h3 id="quizTitle">Fun Quizzes</h3>
+                <p id="quizDesc">00後脆友發瘋人格診斷！解鎖您的內耗小怪獸、終極句點王或摸魚神仙指數，支援社群一鍵複製分享。</p>
+                <div class="card-btn" id="quizBtn">
+                    <span>開始測驗</span>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- 2. Glass Smasher -->
+            <a href="https://game.ating123.com" class="portal-card card-game">
+                <div class="icon-box">
+                    <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                        <polyline points="2 17 12 22 22 17"/>
+                        <polyline points="2 12 12 17 22 12"/>
+                    </svg>
+                </div>
+                <h3 id="gameTitle">Glass Smasher</h3>
+                <p id="gameDesc">壓力大想搞破壞？最純粹的 3D 砸玻璃小遊戲，暢快聲效與碎裂動效，讓您的一天在清脆的碎裂聲中重獲平靜。</p>
+                <div class="card-btn" id="gameBtn">
+                    <span>進入遊戲</span>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- 3. Sec-Notifier -->
+            <a href="https://sec.ating123.com" class="portal-card card-sec">
+                <div class="icon-box">
+                    <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                </div>
+                <h3 id="secTitle">Sec-Notifier</h3>
+                <p id="secDesc">資安弱點事件與監控狀態即時通知工具，整合伺服器運作警報，讓安全弱點無所遁形，為系統穩定保駕護航。</p>
+                <div class="card-btn" id="secBtn">
+                    <span>了解更多</span>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <!-- Portal Footer -->
+        <footer>
+            <p id="portalFooter">© 2026 Ating123 Portal. All Rights Reserved. ｜ 100% 零隱私收集聲明</p>
+        </footer>
+    </div>
+
+    <script>
+        // ================= 多語系翻譯字典 =================
+        let currentLang = localStorage.getItem('ating_portal_lang') || 'zh';
+
+        const translations = {
+            zh: {
+                title: "Ating123 Hub",
+                desc: "解鎖驚喜與實用工具的宇宙。探索我們的趣味心理測驗、休閒解壓遊戲與即時資安通知服務。",
+                quizTitle: "Fun Quizzes",
+                quizDesc: "00後脆友發瘋人格診斷！解鎖您的內耗小怪獸、終極句點王或摸魚神仙指數，支援社群一鍵複製分享。",
+                quizBtn: "開始測驗",
+                gameTitle: "Glass Smasher",
+                gameDesc: "壓力大想搞破壞？最純粹的 3D 砸玻璃小遊戲，暢快聲效與碎裂動效，讓您的一天在清脆的碎裂聲中重獲平靜。",
+                gameBtn: "進入遊戲",
+                secTitle: "Sec-Notifier",
+                secDesc: "資安弱點事件與監控狀態即時通知工具，整合伺服器運作警報，讓安全弱點無所遁形，為系統穩定保駕護航。",
+                secBtn: "了解更多",
+                footer: "© 2026 Ating123 Portal. All Rights Reserved. ｜ 100% 零隱私收集聲明"
+            },
+            en: {
+                title: "Ating123 Hub",
+                desc: "Unlock a universe of fun, distraction, and handy tools. Explore our chaotic personality tests, satisfying arcade games, and real-time security alerts.",
+                quizTitle: "Fun Quizzes",
+                quizDesc: "Got overthinking gremlins? Diagnose your inner slacker, chat killer, or chronic internet brain rot. Shareable to Threads/IG.",
+                quizBtn: "Take Quizzes",
+                gameTitle: "Glass Smasher",
+                gameDesc: "Need an outlet? Relieve your stress by smashing virtual 3D glass panels with physics-based crunching sounds and shattering graphics.",
+                gameBtn: "Play Game",
+                secTitle: "Sec-Notifier",
+                secDesc: "Real-time cybersecurity warning agent and server health monitor. Keeps alert logs clean and servers safe under absolute watch.",
+                secBtn: "Learn More",
+                footer: "© 2026 Ating123 Portal. All Rights Reserved. | 100% Zero-Data Privacy Stance"
+            }
+        };
+
+        function updateStaticTranslations() {
+            const t = translations[currentLang];
+            
+            document.getElementById('portalTitle').textContent = t.title;
+            document.getElementById('portalDesc').textContent = t.desc;
+            
+            document.getElementById('quizTitle').textContent = t.quizTitle;
+            document.getElementById('quizDesc').textContent = t.quizDesc;
+            document.querySelector('#quizBtn span').textContent = t.quizBtn;
+
+            document.getElementById('gameTitle').textContent = t.gameTitle;
+            document.getElementById('gameDesc').textContent = t.gameDesc;
+            document.querySelector('#gameBtn span').textContent = t.gameBtn;
+
+            document.getElementById('secTitle').textContent = t.secTitle;
+            document.getElementById('secDesc').textContent = t.secDesc;
+            document.querySelector('#secBtn span').textContent = t.secBtn;
+
+            document.getElementById('portalFooter').textContent = t.footer;
+            
+            const toggleBtn = document.getElementById('lang-toggle-btn');
+            if (toggleBtn) {
+                toggleBtn.textContent = currentLang === 'zh' ? 'EN' : '繁中';
+            }
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            localStorage.setItem('ating_portal_lang', currentLang);
+            updateStaticTranslations();
+        }
+
+        // Initialize translations
+        updateStaticTranslations();
+
+        // ================= Canvas Particles Stars Background =================
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let particlesArray = [];
+        const numberOfParticles = 75;
+
+        // Set Canvas dimensions to window size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.15 - 0.075;
+                this.speedY = Math.random() * 0.15 - 0.075;
+                
+                // Color variation around neon indigo, cyan, pink
+                const colors = ['rgba(129, 140, 248, 0.45)', 'rgba(34, 211, 238, 0.45)', 'rgba(244, 114, 182, 0.35)'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Edge wrap
+                if (this.x > canvas.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas.width;
+                
+                if (this.y > canvas.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Initial setups
+        resizeCanvas();
+        animateParticles();
+    </script>
+</body>
+</html>
