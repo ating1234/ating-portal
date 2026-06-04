@@ -16,6 +16,7 @@
             --accent-orange: #fb923c;
             --accent-red: #ef4444;
             --accent-yellow: #fef08a;
+            --accent-emerald: #10b981;
         }
 
         * {
@@ -117,13 +118,14 @@
             font-weight: 500;
         }
 
-        /* 3 Columns Card Grid */
+        /* 2x2 Columns Card Grid */
         .portal-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 28px;
             width: 100%;
             margin-bottom: 50px;
+            max-width: 960px;
         }
 
         /* Portal Glass Card */
@@ -212,6 +214,28 @@
             opacity: 1;
         }
 
+        .portal-card.card-music::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 24px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-emerald));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .portal-card.card-music:hover {
+            transform: translateY(-8px);
+            border-color: transparent;
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        .portal-card.card-music:hover::before {
+            opacity: 1;
+        }
+
         /* Card Icon Box */
         .icon-box {
             width: 70px;
@@ -232,6 +256,7 @@
         .card-quiz .icon-box svg { color: var(--accent-pink); filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.4)); }
         .card-game .icon-box svg { color: var(--accent-cyan); filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.4)); }
         .card-sec .icon-box svg { color: var(--accent-orange); filter: drop-shadow(0 0 10px rgba(251, 146, 60, 0.4)); }
+        .card-music .icon-box svg { color: var(--accent-emerald); filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4)); }
 
         /* Card Typography */
         .portal-card h3 {
@@ -280,6 +305,11 @@
             box-shadow: 0 0 15px rgba(251, 146, 60, 0.3);
             border-color: transparent;
         }
+        .card-music:hover .card-btn {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald));
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+            border-color: transparent;
+        }
 
         /* Footer */
         footer {
@@ -299,15 +329,7 @@
                 font-size: 46px;
             }
             .portal-grid {
-                grid-template-columns: repeat(2, 1fr);
                 gap: 24px;
-            }
-            /* 讓第三個卡片滿版 */
-            .card-sec {
-                grid-column: span 2;
-                max-width: 50%;
-                margin: 0 auto;
-                width: 100%;
             }
         }
 
@@ -321,10 +343,6 @@
             .portal-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
-            }
-            .card-sec {
-                grid-column: span 1;
-                max-width: 100%;
             }
             .lang-switcher {
                 position: relative;
@@ -423,6 +441,25 @@
                     </svg>
                 </div>
             </a>
+
+            <!-- 4. Music Tools -->
+            <a href="https://music-tools.ating123.com" class="portal-card card-music">
+                <div class="icon-box">
+                    <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M9 18V5l12-2v13"/>
+                        <circle cx="6" cy="18" r="3"/>
+                        <circle cx="18" cy="16" r="3"/>
+                    </svg>
+                </div>
+                <h3 id="musicTitle">Music Tools</h3>
+                <p id="musicDesc">您的線上音樂助手！提供音樂格式轉檔，YouTube 抓取音樂，人聲分離，樂器聲音分離以及速度和調性調整等常用功能！</p>
+                <div class="card-btn" id="musicBtn">
+                    <span>探索工具</span>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
         </div>
 
         <!-- Portal Footer -->
@@ -448,6 +485,9 @@
                 secTitle: "Sec-Notifier",
                 secDesc: "資安弱點事件與監控狀態即時通知工具，整合伺服器運作警報，讓安全弱點無所遁形，為系統穩定保駕護航。",
                 secBtn: "了解更多",
+                musicTitle: "Music Tools",
+                musicDesc: "您的線上音樂助手！提供音樂格式轉檔，YouTube 抓取音樂，人聲分離，樂器聲音分離以及速度和調性調整等常用功能！",
+                musicBtn: "探索工具",
                 footer: "© 2026 Ating123 Portal. All Rights Reserved. ｜ 100% 零隱私收集聲明"
             },
             en: {
@@ -462,6 +502,9 @@
                 secTitle: "Sec-Notifier",
                 secDesc: "Real-time cybersecurity warning agent and server health monitor. Keeps alert logs clean and servers safe under absolute watch.",
                 secBtn: "Learn More",
+                musicTitle: "Music Tools",
+                musicDesc: "Your ultimate music assistant! Offering audio format conversion, YouTube audio extraction, vocal and instrument isolation, as well as tempo and pitch adjustment tools.",
+                musicBtn: "Explore Tools",
                 footer: "© 2026 Ating123 Portal. All Rights Reserved. | 100% Zero-Data Privacy Stance"
             }
         };
@@ -483,6 +526,10 @@
             document.getElementById('secTitle').textContent = t.secTitle;
             document.getElementById('secDesc').textContent = t.secDesc;
             document.querySelector('#secBtn span').textContent = t.secBtn;
+
+            document.getElementById('musicTitle').textContent = t.musicTitle;
+            document.getElementById('musicDesc').textContent = t.musicDesc;
+            document.querySelector('#musicBtn span').textContent = t.musicBtn;
 
             document.getElementById('portalFooter').textContent = t.footer;
             
