@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ating123 Portal</title>
+    <link rel="icon" href="favicon.png" type="image/png">
     <!-- Google Fonts Outfit & Noto Sans TC -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -97,6 +98,31 @@
             margin-bottom: 50px;
             user-select: none;
         }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+        .portal-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(129, 140, 248, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: pulse-glow 3s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 20px rgba(129, 140, 248, 0.5), 0 0 40px rgba(129, 140, 248, 0.2);
+                border-color: rgba(129, 140, 248, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(244, 114, 182, 0.7), 0 0 50px rgba(244, 114, 182, 0.3);
+                border-color: rgba(244, 114, 182, 0.5);
+            }
+        }
         header h1 {
             font-family: var(--font-outfit);
             font-size: 56px;
@@ -106,7 +132,6 @@
             -webkit-text-fill-color: transparent;
             letter-spacing: -2px;
             display: inline-block;
-            margin-bottom: 12px;
             filter: 
                 drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.85)) 
                 drop-shadow(-2px -2px 0.5px rgba(255, 255, 255, 0.55))
@@ -353,6 +378,15 @@
                 right: 0;
                 margin: 0 0 24px auto; /* 靠右對齊 */
             }
+            .logo-container {
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+            .portal-logo {
+                width: 64px;
+                height: 64px;
+            }
             /* 調整手機順序防重疊 */
             header {
                 order: 1;
@@ -383,7 +417,10 @@
 
         <!-- Portal Header -->
         <header>
-            <h1 id="portalTitle">Ating123 Hub</h1>
+            <div class="logo-container">
+                <img src="favicon.png" alt="Ating123 Logo" class="portal-logo">
+                <h1 id="portalTitle">Ating123 Hub</h1>
+            </div>
             <p id="portalDesc">解鎖驚喜與實用工具的宇宙。探索我們的趣味心理測驗、休閒解壓遊戲、多功能音樂工具與即時資安通知服務。</p>
         </header>
 
