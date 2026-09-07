@@ -69,7 +69,7 @@
         .portal-wrapper {
             width: 100%;
             max-width: 1240px;
-            padding: 40px 24px 60px;
+            padding: 20px 24px 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -83,7 +83,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 36px;
+            margin-bottom: 18px;
             padding: 12px 20px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -160,7 +160,7 @@
         /* Hero Header */
         header.portal-header {
             text-align: center;
-            margin-bottom: 44px;
+            margin-bottom: 20px;
             user-select: none;
             max-width: 780px;
         }
@@ -548,7 +548,7 @@
 
         @media (max-width: 768px) {
             .portal-wrapper {
-                padding: 24px 16px 40px;
+                padding: 12px 16px 36px;
             }
             header.portal-header h1 {
                 font-size: 38px;
@@ -594,8 +594,6 @@
 
         <!-- Header -->
         <header class="portal-header">
-            <div class="hero-tag" id="heroBadge">⚡ Next-Gen Portal 2.0</div>
-            <h1 id="portalTitle">Next-Gen <span class="gradient-text">Web Applications</span></h1>
             <p id="portalDesc">解鎖驚喜與實用工具的多元宇宙。探索趣味測驗、解壓遊戲、音樂助手、投資分析與生活健康應用。</p>
         </header>
 
@@ -990,8 +988,6 @@
         function updateStaticTranslations() {
             const t = translations[currentLang];
 
-            document.getElementById("heroBadge").textContent = t.badge;
-            document.getElementById("portalTitle").innerHTML = t.titleHTML;
             document.getElementById("portalDesc").textContent = t.desc;
             document.getElementById("sysStatusText").textContent = t.sysStatus;
 
