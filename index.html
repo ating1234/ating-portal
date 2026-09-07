@@ -862,13 +862,11 @@
 
         const translations = {
             zh: {
-                badge: "⚡ Next-Gen Portal 2.0",
-                titleHTML: "Next-Gen <span class="gradient-text">Web Applications</span>",
                 desc: "解鎖驚喜與實用工具的多元宇宙。探索趣味測驗、解壓遊戲、音樂助手、投資分析與生活健康應用。",
                 sysStatus: "7 個服務在線",
-                
+
                 catQuiz: "休閒娛樂",
-                quizTitle: "Fun Quizzes",
+                quizTitle: "Fun Quizzes 趣味測驗",
                 quizDesc: "00後脆友發瘋人格診斷！解鎖內耗小怪獸、終極句點王或摸魚神仙指數，支援社群一鍵複製分享。",
                 quizBtn: "開始測驗",
                 tagQuiz1: "#發瘋人格",
@@ -885,22 +883,22 @@
                 tagDiv3: "#歷史配息",
 
                 catGame: "3D 街機遊戲",
-                gameTitle: "Glass Smasher",
+                gameTitle: "Glass Smasher 砸玻璃",
                 gameDesc: "極致爽快的 3D 砸玻璃減壓遊戲，擬真清脆碎裂動效與立體音效！",
                 gameBtn: "進入遊戲",
                 tagGame1: "#3D物理",
                 tagGame2: "#休閒解壓",
 
                 catSec: "資安守護",
-                secTitle: "Sec-Notifier",
+                secTitle: "Sec-Notifier 資安通知",
                 secDesc: "弱點事件與伺服器健康狀態即時通知，守護雲端資安與系統穩定運作。",
                 secBtn: "安全監控",
                 tagSec1: "#即時監控",
                 tagSec2: "#弱點警報",
 
                 catMusic: "音訊工作站",
-                musicTitle: "Music Tools",
-                musicDesc: "全方位音訊助手：格式轉檔、AI 人聲與樂器分離、調性與速度微調。",
+                musicTitle: "Music Tools 音訊工具",
+                musicDesc: "全方位音訊工作站：格式轉檔、AI 人聲與樂器分離、調性與速度微調。",
                 musicBtn: "探索工具",
                 tagMusic1: "#人聲分離",
                 tagMusic2: "#音訊轉檔",
@@ -923,8 +921,6 @@
                 footer: "© 2026 Ating123 Hub. Designed for Productivity & Joy. All Rights Reserved."
             },
             en: {
-                badge: "⚡ Next-Gen Portal 2.0",
-                titleHTML: "Next-Gen <span class="gradient-text">Web Applications</span>",
                 desc: "Unlock a universe of fun, focus, and handy productivity tools. Discover quirky personality quizzes, stress relief, music tooling, and financial insights.",
                 sysStatus: "7 SERVICES LIVE",
 
@@ -987,72 +983,78 @@
 
         function updateStaticTranslations() {
             const t = translations[currentLang];
+            if (!t) return;
 
-            document.getElementById("portalDesc").textContent = t.desc;
-            document.getElementById("sysStatusText").textContent = t.sysStatus;
+            const setText = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = val;
+            };
+
+            setText("portalDesc", t.desc);
+            setText("sysStatusText", t.sysStatus);
 
             // Quiz
-            document.getElementById("catQuiz").textContent = t.catQuiz;
-            document.getElementById("quizTitle").textContent = t.quizTitle;
-            document.getElementById("quizDesc").textContent = t.quizDesc;
-            document.getElementById("quizBtn").textContent = t.quizBtn;
-            document.getElementById("tagQuiz1").textContent = t.tagQuiz1;
-            document.getElementById("tagQuiz2").textContent = t.tagQuiz2;
-            document.getElementById("tagQuiz3").textContent = t.tagQuiz3;
+            setText("catQuiz", t.catQuiz);
+            setText("quizTitle", t.quizTitle);
+            setText("quizDesc", t.quizDesc);
+            setText("quizBtn", t.quizBtn);
+            setText("tagQuiz1", t.tagQuiz1);
+            setText("tagQuiz2", t.tagQuiz2);
+            setText("tagQuiz3", t.tagQuiz3);
 
             // Dividend
-            document.getElementById("catDividend").textContent = t.catDividend;
-            document.getElementById("dividendTitle").textContent = t.dividendTitle;
-            document.getElementById("dividendDesc").textContent = t.dividendDesc;
-            document.getElementById("dividendBtn").textContent = t.dividendBtn;
-            document.getElementById("lblEstYield").textContent = t.lblEstYield;
-            document.getElementById("tagDiv1").textContent = t.tagDiv1;
-            document.getElementById("tagDiv2").textContent = t.tagDiv2;
-            document.getElementById("tagDiv3").textContent = t.tagDiv3;
+            setText("catDividend", t.catDividend);
+            setText("dividendTitle", t.dividendTitle);
+            setText("dividendDesc", t.dividendDesc);
+            setText("dividendBtn", t.dividendBtn);
+            setText("lblEstYield", t.lblEstYield);
+            setText("tagDiv1", t.tagDiv1);
+            setText("tagDiv2", t.tagDiv2);
+            setText("tagDiv3", t.tagDiv3);
 
             // Game
-            document.getElementById("catGame").textContent = t.catGame;
-            document.getElementById("gameTitle").textContent = t.gameTitle;
-            document.getElementById("gameDesc").textContent = t.gameDesc;
-            document.getElementById("gameBtn").textContent = t.gameBtn;
-            document.getElementById("tagGame1").textContent = t.tagGame1;
-            document.getElementById("tagGame2").textContent = t.tagGame2;
+            setText("catGame", t.catGame);
+            setText("gameTitle", t.gameTitle);
+            setText("gameDesc", t.gameDesc);
+            setText("gameBtn", t.gameBtn);
+            setText("tagGame1", t.tagGame1);
+            setText("tagGame2", t.tagGame2);
 
             // Sec
-            document.getElementById("catSec").textContent = t.catSec;
-            document.getElementById("secTitle").textContent = t.secTitle;
-            document.getElementById("secDesc").textContent = t.secDesc;
-            document.getElementById("secBtn").textContent = t.secBtn;
-            document.getElementById("tagSec1").textContent = t.tagSec1;
-            document.getElementById("tagSec2").textContent = t.tagSec2;
+            setText("catSec", t.catSec);
+            setText("secTitle", t.secTitle);
+            setText("secDesc", t.secDesc);
+            setText("secBtn", t.secBtn);
+            setText("tagSec1", t.tagSec1);
+            setText("tagSec2", t.tagSec2);
 
             // Music
-            document.getElementById("catMusic").textContent = t.catMusic;
-            document.getElementById("musicTitle").textContent = t.musicTitle;
-            document.getElementById("musicDesc").textContent = t.musicDesc;
-            document.getElementById("musicBtn").textContent = t.musicBtn;
-            document.getElementById("tagMusic1").textContent = t.tagMusic1;
-            document.getElementById("tagMusic2").textContent = t.tagMusic2;
+            setText("catMusic", t.catMusic);
+            setText("musicTitle", t.musicTitle);
+            setText("musicDesc", t.musicDesc);
+            setText("musicBtn", t.musicBtn);
+            setText("tagMusic1", t.tagMusic1);
+            setText("tagMusic2", t.tagMusic2);
 
             // Trumpet
-            document.getElementById("catTrumpet").textContent = t.catTrumpet;
-            document.getElementById("trumpetTitle").textContent = t.trumpetTitle;
-            document.getElementById("trumpetDesc").textContent = t.trumpetDesc;
-            document.getElementById("trumpetBtn").textContent = t.trumpetBtn;
-            document.getElementById("tagTrum1").textContent = t.tagTrum1;
-            document.getElementById("tagTrum2").textContent = t.tagTrum2;
+            setText("catTrumpet", t.catTrumpet);
+            setText("trumpetTitle", t.trumpetTitle);
+            setText("trumpetDesc", t.trumpetDesc);
+            setText("trumpetBtn", t.trumpetBtn);
+            setText("tagTrum1", t.tagTrum1);
+            setText("tagTrum2", t.tagTrum2);
 
             // Food
-            document.getElementById("catFood").textContent = t.catFood;
-            document.getElementById("foodTitle").textContent = t.foodTitle;
-            document.getElementById("foodDesc").textContent = t.foodDesc;
-            document.getElementById("foodBtn").textContent = t.foodBtn;
-            document.getElementById("tagFood1").textContent = t.tagFood1;
-            document.getElementById("tagFood2").textContent = t.tagFood2;
+            setText("catFood", t.catFood);
+            setText("foodTitle", t.foodTitle);
+            setText("foodDesc", t.foodDesc);
+            setText("foodBtn", t.foodBtn);
+            setText("tagFood1", t.tagFood1);
+            setText("tagFood2", t.tagFood2);
 
             // Footer
-            document.getElementById("privacyNotice").textContent = t.privacy;
-            document.getElementById("portalFooter").textContent = t.footer;
+            setText("privacyNotice", t.privacy);
+            setText("portalFooter", t.footer);
 
             const toggleBtn = document.getElementById("lang-toggle-btn");
             if (toggleBtn) {
@@ -1066,7 +1068,7 @@
             updateStaticTranslations();
         }
 
-        // Initialize translations
+        // Initialize translations immediately
         updateStaticTranslations();
 
         // ================= Cyberpunk Ambient Particles Canvas =================
